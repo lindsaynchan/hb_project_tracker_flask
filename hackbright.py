@@ -9,6 +9,25 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+def display_students():
+    """display all student names"""
+    QUERY = """
+        SELECT first_name, last_name, github 
+        FROM Students
+        """
+    db_cursor = db.session.execute(QUERY)
+    rows = db_cursor.fetchall()
+    return rows
+
+def display_projects():
+    """display all project names"""
+    QUERY = """
+        SELECT title
+        FROM Projects
+        """
+    db_cursor = db.session.execute(QUERY)
+    rows = db_cursor.fetchall()
+    return rows
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""

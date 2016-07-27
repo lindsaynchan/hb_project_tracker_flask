@@ -4,6 +4,18 @@ import hackbright
 
 app = Flask(__name__)
 
+
+
+@app.route("/")
+def show_homepage():
+    """Lists students and projects"""
+
+    student_list = hackbright.display_students()
+    project_list = hackbright.display_projects()
+
+    return render_template("homepage.html", student_list=student_list, 
+                                            project_list=project_list)
+
 @app.route("/student-search")
 def get_student_form():
     return render_template("student_search.html")
@@ -45,7 +57,10 @@ def display_form_confirmation():
     github = hackbright.make_new_student(first_name, last_name, github)
     # return redirect('/student/%s') % github
     first, last, github = hackbright.get_student_by_github(github)
-    html = render_template("student_add_confirmation.html", first=first, last=last, github=github)
+    html = render_template("student_add_confirmation.html", 
+                            first=first, 
+                            last=last, 
+                            github=github)
     return html
 
 @app.route("/project_search")
@@ -54,14 +69,17 @@ def search_project_info():
 
     return render_template("project_search.html")
 
-@app.route("/project/<title>")
-def display_project_info(title):
+@app.route("/project")
+def display_project_info():
     """Display project information."""
 
     title = request.args.get("title")
     project_info = hackbright.get_project_by_title(title)
+    student_grades = hackbright.get_grades_by_title(title)
 
-    return render_template("project_info.html", project_info=project_info)
+    return render_template("project_info.html", 
+                            project_info=project_info, 
+                            student_grades=student_grades)
 
 if __name__ == "__main__":
     hackbright.connect_to_db(app)

@@ -10,5 +10,19 @@
 <br>
 <br>
 <p><b>Max Grade</b>: {{ project_info[2] }}</p>
+
+{% if student_grades %}
+    <ul><b>Student Grades on {{ project_info[0] }}</b>
+    <br>
+    <br>
+    {% for student in student_grades %}
+        <li><i> Student:</i> <a href="/student?github={{ student[0] }}">{{ student[0] }}</a>, <i>Grade:</i> {{ student[1] }} </li>
+        <br>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>Students have not completed this project!</p>
+
+{% endif %}
 </body>
 </html>
